@@ -3,6 +3,7 @@ cryptography==2.8
 Django==2.2.4
 django-rest-knox==4.1.0
 djangorestframework==3.11.0
+django-webpack-loader==0.7.0
 pycparser==2.19
 pytz==2019.3
 six==1.14.0

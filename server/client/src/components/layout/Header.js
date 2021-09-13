@@ -61,7 +61,7 @@ export class Header extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a className="navbar-brand" href="#">Lead Manager</a>
+            <a className="navbar-brand" href="#">Django React Starter</a>
             {this.navLinks()}
           </div>
         </div>
