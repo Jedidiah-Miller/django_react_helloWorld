@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'knox',
 
     'leads',
+    'google_news',
     'accounts',
     'client',
 ]
@@ -134,8 +135,8 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    'server/client/static/client',
-    'server/client/templates/client',
+    './client/static/client',
+    './client/templates/client',
 ]
 
 WEBPACK_LOADER = {
