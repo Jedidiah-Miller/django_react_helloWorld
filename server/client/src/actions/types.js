@@ -6,6 +6,9 @@ export const LEAD_ACTIONS = {
   GET_ALL: "GET_LEADS",
   DELETE: "DELETE_LEADS"
 };
+export const ARTICLE_ACTIONS = {
+  GET_ALL: "GET_ARTICLES",
+};
 
 export const ERROR_ACTIONS = {
   GET: "GET_ERRORS"

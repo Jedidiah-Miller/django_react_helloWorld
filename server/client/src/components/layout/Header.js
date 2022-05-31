@@ -47,7 +47,7 @@ export class Header extends Component {
   render() {
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-light bg-light">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         <div className="container">
           <button
             className="navbar-toggler"
@@ -61,7 +61,7 @@ export class Header extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a className="navbar-brand" href="#">Django React Starter</a>
+            <a className="navbar-brand" href="#">World News App</a>
             {this.navLinks()}
           </div>
         </div>

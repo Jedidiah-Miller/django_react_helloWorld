@@ -8,6 +8,7 @@ import Login from './accounts/Login';
 import Register from './accounts/Register';
 import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './leads/Dashboard';
+import Feed from './news/Feed';
 
 import { Provider as AlertProvider, positions, transitions } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -40,7 +41,9 @@ class App extends Component {
             <Alerts/>
             <div className="container">
               <Switch>
-                <PrivateRoute exact path="/" component={Dashboard} />
+                <Route exact path="/" component={Dashboard} />
+                <Route exact path="/feed" component={Feed} />
+                {/* vvv credentials vvv */}
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
               </Switch>
