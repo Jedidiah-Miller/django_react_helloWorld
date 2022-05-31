@@ -1,5 +1,5 @@
 {
-  "name": "django_react",
+  "name": "News App",
   "version": "1.0.0",
   "description": "django react starter",
   "main": "webpack.config.js",
