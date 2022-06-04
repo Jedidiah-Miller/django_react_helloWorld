@@ -135,8 +135,8 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    './client/static/client',
-    './client/templates/client',
+    'server/client/static/client', # nothing changed, but this needed to be updated
+    'server/client/templates/client', # nothing changed, but this needed to be updated
 ]
 
 WEBPACK_LOADER = {
