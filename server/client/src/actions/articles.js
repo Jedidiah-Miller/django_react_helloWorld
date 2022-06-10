@@ -2,34 +2,37 @@ import axios from 'axios';
 import { ARTICLE_ACTIONS, ERROR_ACTIONS } from './types';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
+import { multiParams } from './http/config';
 
 
 const baseUrl = 'api/google_news/'
 
-/**
- * CREATE LEAD
- * @param {object} lead 
- */
-export const createLead = (lead) => (dispatch, getState) => {
-  axios.post('api/articles/', lead, tokenConfig(getState))
-    .then(res => {
-      // dispatch(createMessage({leadAdded: 'Lead Added'}));
-      dispatch({
-        type: LEAD_ACTIONS.CREATE,
-        payload: res.data
-      });
-    })
-    .catch(err => handleError(err, dispatch));
-}
+// /**
+//  * CREATE LEAD
+//  * @param {object} lead 
+//  */
+// export const createLead = (lead) => (dispatch, getState) => {
+//   axios.post('api/articles/', lead, tokenConfig(getState))
+//     .then(res => {
+//       // dispatch(createMessage({leadAdded: 'Lead Added'}));
+//       dispatch({
+//         type: LEAD_ACTIONS.CREATE,
+//         payload: res.data
+//       });
+//     })
+//     .catch(err => handleError(err, dispatch));
+// }
 
 /**
  * GET articles
  */
-export const getarticles = () => (dispatch, getState) => {
+export const getArticles = (q = null) => (dispatch, getState) => {
+
+  dispatch({type: ARTICLE_ACTIONS.GET_ALL});
   axios.get(baseUrl, tokenConfig(getState))
     .then(res => {
       dispatch({
-        type: ARTICLE_ACTIONS.GET_ALL,
+        type: ARTICLE_ACTIONS.GET_ALL_SUCCESS,
         payload: res.data
       });
     })

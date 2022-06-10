@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { LoaderSpinner } from '../common/UI/LoaderSpinner';
 
 
 export class FeedItem extends Component {
@@ -27,19 +28,6 @@ export class FeedItem extends Component {
   };
 
 
-  tempCardSummary = (s) => {
-    /**
-     * EX:
-      <a href="https://www.reuters.com/world/china/tsai-says-us-national-guard-planning-cooperation-with-taiwan-military-2022-05-31/" target="_blank">Tsai says U.S. National Guard planning 'cooperation' with Taiwan military</a>&nbsp;&nbsp;<font color="#6f6f6f">Reuters</font><strong><a href="https://news.google.com/stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lZMzVpd0JSR3hqNkpjam0zMm9TZ0FQAQ?oc=5" target="_blank">View Full Coverage on Google News</a></strong>
-     */
-
-      var parser = new DOMParser();
-      const wrapper = `<div>${s}</div>`
-      var doc = parser.parseFromString(wrapper, 'text/html');
-      return doc.body.firstChild;
-  };
-
-
   render() {
 
     console.log(this.props)
@@ -47,7 +35,7 @@ export class FeedItem extends Component {
     const links = this.getLinks();
 
     return (
-      <div className="card mb-3" style={{'max-width': '540px'}}>
+      <div className="card mb-3" style={{'maxWidth': '540px'}}>
         <div className="row g-0">
           <div className="col-md-4">
             <img src="..." className="img-fluid rounded-start" alt="..." />
@@ -66,7 +54,7 @@ export class FeedItem extends Component {
               <p className="card-text">
                 <div dangerouslySetInnerHTML={{__html: summary}} />
               </p>
-            {links && this.cardLinks(links)}
+              {links && this.cardLinks(links)}
             </div>
           </div>
         </div>

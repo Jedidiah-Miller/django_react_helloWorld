@@ -2,7 +2,8 @@ import { ARTICLE_ACTIONS } from "../actions/types";
 
 
 const initialState = {
-  articles: []
+  articles: [],
+  isLoadingArticles: false,
 };
 
 
@@ -11,7 +12,14 @@ export default function(state = initialState, action) {
     case ARTICLE_ACTIONS.GET_ALL:
       return {
         ...state,
-        articles: action.payload.entries
+        // articles: action.payload.entries,
+        isLoadingArticles: true
+      }
+    case ARTICLE_ACTIONS.GET_ALL_SUCCESS:
+      return {
+        ...state,
+        articles: action.payload.entries,
+        isLoadingArticles: false
       }
     default:
       return state;

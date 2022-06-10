@@ -14,11 +14,20 @@ class GNArticleAPI(generics.GenericAPIView):
 
 
     def get(self, request, *args, **kwargs):
-        date_time_range = '1d'
-        text = 'taiwan'
-        query_results  = self.gn.search_by_query(query=text, date_range=date_time_range)
-        return Response(query_results)
 
+        try:
+            # params = request.query_params
+
+            # if no search query:
+            date_time_range = '1d'
+            text = 'taiwan'
+            results  = self.gn.search_by_query(query=text, date_range=date_time_range)
+
+            return Response(results)
+
+        except Exception as e:
+            print('WTF:', e )
+            return Response({'error': f'error generating spreadsheet: {e}'}, status=400)
 
 
 # # GNArticle Viewset

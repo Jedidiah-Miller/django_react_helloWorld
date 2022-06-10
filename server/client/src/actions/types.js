@@ -8,6 +8,8 @@ export const LEAD_ACTIONS = {
 };
 export const ARTICLE_ACTIONS = {
   GET_ALL: "GET_ARTICLES",
+  GET_ALL_SUCCESS: "GET_ARTICLES_SUCCESS",
+  GET_ALL_FAIL: "GET_ARTICLES_FAIL",
 };
 
 export const ERROR_ACTIONS = {
