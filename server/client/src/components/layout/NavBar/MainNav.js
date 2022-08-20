@@ -30,7 +30,6 @@ class NavExample extends Component {
                   <Link
                     className="nav-link p-2"
                     to={l.url}
-                    onclick="ga('send', 'event', 'Navbar', 'Community links', 'Blog');"
                     rel="noopener"
                   >
                     {l.text}
