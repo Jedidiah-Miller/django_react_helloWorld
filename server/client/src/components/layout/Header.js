@@ -12,6 +12,23 @@ export class Header extends Component {
     logout: PropTypes.func.isRequired
   };
 
+  links = () => {
+    return [
+      {
+        displayName: 'Feed',
+        path: 'feed'
+      },
+      {
+        displayName: 'Events',
+        path: 'events'
+      },
+      {
+        displayName: 'Login',
+        path: 'Login'
+      },
+    ];
+  };
+
   navLinks = () => {
     const { isAuthenticated, user } = this.props.auth;
 
@@ -34,12 +51,11 @@ export class Header extends Component {
 
     return (
       <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-        <li className="nav-item">
-          <Link to="register" className="nav-link">Register</Link>
-        </li>
-        <li className="nav-item">
-          <Link to="login" className="nav-link">Login</Link>
-        </li>
+        {this.links().map((i,link) =>
+          <li className="nav-item">
+            <Link to={link.path} className="nav-link">{link.displayName}</Link>
+          </li>
+        )}
       </ul>
     );
   }

@@ -30,7 +30,6 @@ export class FeedItem extends Component {
 
   render() {
 
-    console.log(this.props)
     const { title, summary, source, published } = this.props.article;
     const links = this.getLinks();
 
