@@ -7,7 +7,7 @@ import Alerts from './layout/Alerts';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
 import PrivateRoute from './common/PrivateRoute';
-import Dashboard from './leads/Dashboard';
+import Dashboard from './events/Dashboard';
 import Feed from './news/Feed';
 
 import { Provider as AlertProvider, positions, transitions } from 'react-alert';

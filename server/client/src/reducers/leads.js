@@ -1,27 +1,27 @@
-import { LEAD_ACTIONS } from '../actions/types.js';
+import { EVENT_ACTIONS } from '../actions/types.js';
 
 
 const initialState = {
-  leads: []
+  events: []
 };
 
 
 export default function(state = initialState, action) {
   switch(action.type) {
-    case LEAD_ACTIONS.CREATE:
+    case EVENT_ACTIONS.CREATE:
       return {
         ...state,
-        leads: [...state.leads, action.payload]
+        events: [...state.events, action.payload]
       }
-    case LEAD_ACTIONS.GET_ALL:
+    case EVENT_ACTIONS.GET_ALL:
       return {
         ...state,
-        leads: action.payload
+        events: action.payload
       }
-    case LEAD_ACTIONS.DELETE:
+    case EVENT_ACTIONS.DELETE:
       return {
         ...state,
-        leads: state.leads.filter(lead => lead.id !== action.payload)
+        events: state.events.filter(event => event.id !== action.payload)
       }
     default:
       return state;

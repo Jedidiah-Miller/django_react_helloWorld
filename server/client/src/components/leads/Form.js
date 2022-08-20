@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createLead } from '../../actions/leads';
+import { createEvent } from '../../actions/events';
 
 
 export class Form extends Component {
 
   static propTypes = {
-    createLead: PropTypes.func.isRequired
+    createEvent: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -28,7 +28,7 @@ export class Form extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  validateLead({name, email, message}) {
+  validateEvent({name, email, message}) {
     var errors = {};
     if (!name) {
       errors['name'] = 'please provide a name';
@@ -42,13 +42,13 @@ export class Form extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { name, email, message } = this.state;
-    const lead = { name, email, message };
-    const errors = this.validateLead(lead);
+    const event = { name, email, message };
+    const errors = this.validateEvent(event);
     if (errors) {
       this.setState({errors});
       return;
     }
-    this.props.createLead(lead);
+    this.props.createEvent(event);
     // we currently don't get errors in this component
     // back from the server
     if (true) {
@@ -61,7 +61,7 @@ export class Form extends Component {
     const { name, email, message, errors } = this.state;
     return (
       <div className="card card-body mt-4 mb-4">
-        <h2>Add Lead</h2>
+        <h2>Add Event</h2>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Name</label>
@@ -106,4 +106,4 @@ export class Form extends Component {
   }
 }
 
-export default connect(null, { createLead })(Form);
+export default connect(null, { createEvent })(Form);

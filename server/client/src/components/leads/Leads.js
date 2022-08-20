@@ -1,26 +1,26 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getLeads, deleteLead } from '../../actions/leads';
+import { getEvents, deleteEvent } from '../../actions/events';
 
 
-class Leads extends Component {
+class Events extends Component {
 
   static propTypes = {
-    leads: PropTypes.array.isRequired,
-    getLeads: PropTypes.func.isRequired,
-    deleteLead: PropTypes.func.isRequired
+    events: PropTypes.array.isRequired,
+    getEvents: PropTypes.func.isRequired,
+    deleteEvent: PropTypes.func.isRequired
   };
 
   componentDidMount() {
-    this.props.getLeads()
+    this.props.getEvents()
   }
 
   render() {
-    const { leads } = this.props;
+    const { events } = this.props;
     return (
       <Fragment>
-        <h2>leads</h2>
+        <h2>events</h2>
         <table className="table table-striped">
           <thead>
             <tr>
@@ -33,17 +33,17 @@ class Leads extends Component {
             </tr>
           </thead>
           <tbody>
-            {leads.map(lead =>
-              <tr key={lead.id}>
-                <td>{lead.id}</td>
-                <td>{lead.name}</td>
-                <td>{lead.email}</td>
-                <td>{lead.message}</td>
-                <td>{lead.createdAt}</td>
+            {events.map(event =>
+              <tr key={event.id}>
+                <td>{event.id}</td>
+                <td>{event.name}</td>
+                <td>{event.email}</td>
+                <td>{event.message}</td>
+                <td>{event.createdAt}</td>
                 <td>
                   <button 
                     className="btn btn-danger btn-sm"
-                    onClick={this.props.deleteLead.bind(this, lead.id)}
+                    onClick={this.props.deleteEvent.bind(this, event.id)}
                   >
                     {" "}
                     delete
@@ -59,7 +59,7 @@ class Leads extends Component {
 }
 
 const mapStateToProps = state => ({
-  leads: state.leads.leads
+  events: state.events.events
 });
 
-export default connect(mapStateToProps, { getLeads, deleteLead }) (Leads);
+export default connect(mapStateToProps, { getEvents, deleteEvent }) (Events);

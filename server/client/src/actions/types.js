@@ -1,10 +1,10 @@
 /**
- * lead crud operation names or something
+ * event crud operation names or something
  */
-export const LEAD_ACTIONS = {
-  CREATE: "CREATE_LEAD",
-  GET_ALL: "GET_LEADS",
-  DELETE: "DELETE_LEADS"
+export const EVENT_ACTIONS = {
+  CREATE: "CREATE_EVENT",
+  GET_ALL: "GET_EVENTS",
+  DELETE: "DELETE_EVENTS"
 };
 export const ARTICLE_ACTIONS = {
   GET_ALL: "GET_ARTICLES",

@@ -1,19 +1,19 @@
 import axios from 'axios';
-import { LEAD_ACTIONS, ERROR_ACTIONS } from './types';
+import { EVENT_ACTIONS, ERROR_ACTIONS } from './types';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
 
 
 /**
- * CREATE LEAD
- * @param {object} lead 
+ * CREATE EVENT
+ * @param {object} event 
  */
-export const createLead = (lead) => (dispatch, getState) => {
-  axios.post('api/leads/', lead, tokenConfig(getState))
+export const createEvent = (event) => (dispatch, getState) => {
+  axios.post('api/events/', event, tokenConfig(getState))
     .then(res => {
-      dispatch(createMessage({leadAdded: 'Lead Added'}));
+      dispatch(createMessage({eventAdded: 'Event Added'}));
       dispatch({
-        type: LEAD_ACTIONS.CREATE,
+        type: EVENT_ACTIONS.CREATE,
         payload: res.data
       });
     })
@@ -21,13 +21,13 @@ export const createLead = (lead) => (dispatch, getState) => {
 }
 
 /**
- * GET LEADS
+ * GET EVENTS
  */
-export const getLeads = () => (dispatch, getState) => {
-  axios.get('api/leads/', tokenConfig(getState))
+export const getEvents = () => (dispatch, getState) => {
+  axios.get('api/events/', tokenConfig(getState))
     .then(res => {
       dispatch({
-        type: LEAD_ACTIONS.GET_ALL,
+        type: EVENT_ACTIONS.GET_ALL,
         payload: res.data
       });
     })
@@ -35,15 +35,15 @@ export const getLeads = () => (dispatch, getState) => {
 }
 
 /**
- * DELETE LEAD
+ * DELETE EVENT
  * @param {String} id 
  */
-export const deleteLead = (id) => (dispatch, getState) => {
-  axios.delete(`api/leads/${id}/`, tokenConfig(getState))
+export const deleteEvent = (id) => (dispatch, getState) => {
+  axios.delete(`api/events/${id}/`, tokenConfig(getState))
     .then(res => {
-      dispatch(createMessage({leadDeleted: 'Lead Deleted'}));
+      dispatch(createMessage({eventDeleted: 'Event Deleted'}));
       dispatch({
-        type: LEAD_ACTIONS.DELETE,
+        type: EVENT_ACTIONS.DELETE,
         payload: id
       });
     })

@@ -8,15 +8,15 @@ import { multiParams } from './http/config';
 const baseUrl = 'api/google_news/'
 
 // /**
-//  * CREATE LEAD
-//  * @param {object} lead 
+//  * CREATE EVENT
+//  * @param {object} event 
 //  */
-// export const createLead = (lead) => (dispatch, getState) => {
-//   axios.post('api/articles/', lead, tokenConfig(getState))
+// export const createEvent = (event) => (dispatch, getState) => {
+//   axios.post('api/articles/', event, tokenConfig(getState))
 //     .then(res => {
-//       // dispatch(createMessage({leadAdded: 'Lead Added'}));
+//       // dispatch(createMessage({leadAdded: 'Event Added'}));
 //       dispatch({
-//         type: LEAD_ACTIONS.CREATE,
+//         type: EVENT_ACTIONS.CREATE,
 //         payload: res.data
 //       });
 //     })
@@ -40,15 +40,15 @@ export const getArticles = (q = null) => (dispatch, getState) => {
 }
 
 /**
- * DELETE LEAD
+ * DELETE EVENT
  * @param {String} id 
  */
-export const deleteLead = (id) => (dispatch, getState) => {
+export const deleteEvent = (id) => (dispatch, getState) => {
   axios.delete(`api/articles/${id}/`, tokenConfig(getState))
     .then(res => {
-      dispatch(createMessage({leadDeleted: 'Lead Deleted'}));
+      dispatch(createMessage({leadDeleted: 'Event Deleted'}));
       dispatch({
-        type: LEAD_ACTIONS.DELETE,
+        type: EVENT_ACTIONS.DELETE,
         payload: id
       });
     })
