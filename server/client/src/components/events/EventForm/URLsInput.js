@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ReactTinyLink } from "react-tiny-link";
 
 
 export class URLsInput extends Component {
@@ -56,7 +57,13 @@ export class URLsInput extends Component {
               <tr key={i}>
                 <th scope="row">{i + 1}</th>
                 <td>
-                  <a target="blank" href={url}>{url}</a>
+                  <ReactTinyLink
+                    cardSize="small"
+                    showGraphic={true}
+                    maxLine={2}
+                    minLine={1}
+                    url={url}
+                  />
                 </td>
               </tr>
             )}
