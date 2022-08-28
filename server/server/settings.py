@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
 
+    'countries',
     'events',
     'google_news',
     'accounts',
