@@ -22,6 +22,8 @@ export class URLsInput extends Component {
 
     const { url, urls, onChange, updateURLs } = this.props;
 
+    const isDisabled = url === '';
+
     return (
       <div className="form-group">
         <label>Source URLs</label>
@@ -30,6 +32,7 @@ export class URLsInput extends Component {
             id="button-addon1"
             className="btn btn-primary"
             type="button"
+            disabled={isDisabled}
             onClick={updateURLs}
           >
             add +
