@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Form from './Form';
-import Events from './Events';
+import Form from './EventForm/Form';
+import Events from './Feed/Events';
 
 export default function Dashboard() {
   return (

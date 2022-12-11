@@ -2,14 +2,17 @@ import axios from 'axios';
 import { EVENT_ACTIONS, ERROR_ACTIONS } from './types';
 import { createMessage, returnErrors } from './messages';
 import { tokenConfig } from './auth';
+import { multiParams } from './http/config';
 
+
+const baseUrl = 'api/events';
 
 /**
  * CREATE EVENT
  * @param {object} event 
  */
 export const createEvent = (event) => (dispatch, getState) => {
-  axios.post('api/events/', event, tokenConfig(getState))
+  axios.post(baseUrl, event, tokenConfig(getState))
     .then(res => {
       dispatch(createMessage({eventAdded: 'Event Added'}));
       dispatch({
@@ -24,7 +27,7 @@ export const createEvent = (event) => (dispatch, getState) => {
  * GET EVENTS
  */
 export const getEvents = () => (dispatch, getState) => {
-  axios.get('api/events/', tokenConfig(getState))
+  axios.get(baseUrl, tokenConfig(getState))
     .then(res => {
       dispatch({
         type: EVENT_ACTIONS.GET_ALL,
@@ -39,11 +42,31 @@ export const getEvents = () => (dispatch, getState) => {
  * @param {String} id 
  */
 export const deleteEvent = (id) => (dispatch, getState) => {
-  axios.delete(`api/events/${id}/`, tokenConfig(getState))
+  // dispatch({type: EVENT_ACTIONS.DELETE, payload: id});
+  const params = multiParams({id})
+  axios.delete(`${baseUrl}?${params}`, tokenConfig(getState))
     .then(res => {
       dispatch(createMessage({eventDeleted: 'Event Deleted'}));
       dispatch({
         type: EVENT_ACTIONS.DELETE,
+        payload: id
+      });
+    })
+    .catch(err => console.error(err));
+}
+
+/**
+ * get EVENT
+ * @param {String} id 
+ */
+export const getEvent = (id) => (dispatch, getState) => {
+  // dispatch({type: EVENT_ACTIONS.GET_ONE, payload: id});
+  const params = multiParams({id})
+  axios.get(`${baseUrl}?${params}`, tokenConfig(getState))
+    .then(res => {
+      dispatch(createMessage({eventDeleted: 'Event Deleted'}));
+      dispatch({
+        type: EVENT_ACTIONS.GET_ONE_SUCCESS,
         payload: id
       });
     })
