@@ -1,9 +1,9 @@
 from rest_framework import generics
-from google_news.models import GNArticle
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .serializers import GNArticleSerializer
 from .pygooglenews import GoogleNewsManager
+from .news_bot import NewsBot
 
 # GNArticle Viewset
 class GNArticleAPI(generics.GenericAPIView):
@@ -11,9 +11,10 @@ class GNArticleAPI(generics.GenericAPIView):
 
     def __init__(self):
         self.gn = GoogleNewsManager()
+        self.news_bot = NewsBot()
 
 
-    def get(self, request, *args, **kwargs):
+    def get_google_news(self, request, *args, **kwargs):
 
         try:
             # params = request.query_params
@@ -27,7 +28,18 @@ class GNArticleAPI(generics.GenericAPIView):
 
         except Exception as e:
             print('WTF:', e )
-            return Response({'error': f'error generating spreadsheet: {e}'}, status=400)
+            return Response({'error': f'error fetching google news: {e}'}, status=400)
+
+
+    def get(self, request, *args, **kwargs):
+
+        try:
+            results  = self.news_bot.get_all_articles()
+            return Response({"entries": results})
+
+        except Exception as e:
+            print('WTF:', e )
+            return Response({'error': f'error fetching article urls: {e}'}, status=400)
 
 
 # # GNArticle Viewset

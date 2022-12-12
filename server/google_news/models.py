@@ -4,11 +4,11 @@ import re
 # from django.contrib.postgres.fields import ArrayField
 
 
-# class GNArticle(models.Model):
-#     title = models.CharField(max_length=100)
-#     message = models.CharField(max_length=500, blank=True)
-#     source = models.CharField(max_length=500, blank=True)
-#     createdAt = models.DateTimeField(auto_now_add=True)
+class GNArticle(models.Model):
+    title = models.CharField(max_length=100)
+    message = models.CharField(max_length=500, blank=True)
+    source = models.CharField(max_length=500, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
 
 
 
@@ -129,3 +129,35 @@ class NewsSource(object):
 
         return re.search(self.url_requirments, url)
 
+
+
+class NewsArticle:
+    '''
+    News Article model
+    '''
+    id: str
+    '''
+    NewsArticle id
+    '''
+    source: str
+    '''
+    NewsSource id
+    '''
+    title: str
+    '''
+    headliine / title of the news article
+    '''
+    url: str
+    '''
+    url for the news article
+    '''
+    summary: str # optional
+    '''
+    summary of news the article
+    '''
+
+    def __init__(self, source = None, title = None, url = None, summary = None):
+        self.source = source
+        self.url = url
+        self.title = title
+        self.summary = summary

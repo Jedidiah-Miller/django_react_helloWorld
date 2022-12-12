@@ -1,8 +1,8 @@
-from models import NewsSource
-from requests_manager import RequestsManager
-from html_manager import HtmlManager
+from .models import NewsSource, NewsArticle
+from .requests_manager import RequestsManager
+from .html_manager import HtmlManager
 from newspaper import Article
-from source_data import SOURCE_LIST
+from .source_data import SOURCE_LIST
 
 
 class NewsBot:
@@ -38,6 +38,15 @@ class NewsBot:
         return urls
 
 
+    def create_news_article(self, page, source: NewsSource, url: str) -> NewsArticle:
+        return NewsArticle(
+            source = source.name,
+            title = 'TODO: add title, or add default / empty title',
+            url = url,
+            summary = 'TODO: add summary, or add default / empty summary'
+        )
+
+
     def get_article_urls_list(self, source: NewsSource):
         urls = {}
         print('__________________________________')
@@ -48,18 +57,27 @@ class NewsBot:
             page_data = self.requests_manager.get_html_from_url(url)
 
             page_urls = self.get_urls_from_page(page_data, source)
-            for page_url in page_urls:
-                urls[page_url] = 1
+            for url in page_urls:
+                news_article = self.create_news_article(page_data, source, url)
+                urls[url] = news_article.__dict__
 
-        return list(urls)
+        return list(urls.values())
 
 
-    def get_all_articles(self):
-        urls = []
-        for source in SOURCE_LIST:
-            urls += self.get_article_urls_list(source)
-
-        return urls
+    def get_all_articles(self, as_list = True):
+        '''
+        return as a list of News Articles unless specified otherwise
+        '''
+        if as_list:
+            urls = []
+            for source in SOURCE_LIST:
+                urls += self.get_article_urls_list(source)
+            return urls
+        else:
+            urls = {}
+            for source in SOURCE_LIST:
+                urls[source.name] = self.get_article_urls_list(source)
+            return urls
 
 
 
