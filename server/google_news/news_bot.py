@@ -65,7 +65,7 @@ class NewsBot:
 
 def test_bot():
     bot = NewsBot()
-    # 1. # get the artiles list page
+    # 1. # get the articles list page
     articles_list = bot.get_all_articles()
     # 2. # get all the links from the page
     i = 0
@@ -76,5 +76,3 @@ def test_bot():
 
     print('__________________________________________________')
     print('done')
-
-test_bot()
