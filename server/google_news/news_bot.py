@@ -1,94 +1,80 @@
-from bs4 import BeautifulSoup
-import urllib.request, sys, time
-import pandas as pd
+from models import NewsSource
+from requests_manager import RequestsManager
+from html_manager import HtmlManager
 from newspaper import Article
-import requests
-from fake_useragent import UserAgent
-import re
-# _______
-from site_layouts import Website, Reuters, AntiWar
-from proxies import get_proxies
-
-from pprint import pprint
-
-
-DEFAULT_URL = AntiWar.article_list
-ECT = 'text/html; charset=UTF-8'
-
+from source_data import SOURCE_LIST
 
 
 class NewsBot:
 
+    requests_manager: RequestsManager
+    html_manager: HtmlManager
+
     def __init__(self):
-        self.user_agent = UserAgent()
+        self.requests_manager = RequestsManager()
+        self.html_manager = HtmlManager()
         print(self.__str__, ': INITIALIZED')
 
 
-    def handle_page_soup(self, key: str, soup: BeautifulSoup):
-        pprint(soup)
-        links = set()
-        content_div_key = {
-            'id': key
-        }
-        content = soup.find("div",attrs=content_div_key)
-        a_links = content.find_all('a')
-        for a in a_links:
-            print('_________________________')
-            href = a.get('href')
-            text = a.text
-            print('text:', text)
-            print('href:', href)
-            print('_________________________')
-        return 
+    def get_urls_from_page(self, page, source: NewsSource):
 
+        urls = []
+        bad_urls = []
 
-    def get_website_data(self, w: Website):
-
-        data = self.get_with_url(url=w.article_list)
-        content_type = data.headers.get("content-type", "unknown")
-
-        if content_type == ECT:
-        # should be - 'text/html; charset=UTF-8'
-            soup = BeautifulSoup(data.text, "html.parser")
-            return self.handle_page_soup(w.content_div, soup)
-        else:
-            print(content_type)
-            print('WHAT DO I DO?')
-
-
-    def get_headers(self) -> dict:
-        return {
-            'User-Agent': str(self.user_agent.random)
+        element_type = source.list_element.element_type
+        attributes = {
+            'class': source.list_element.get_element_regex()
         }
 
-
-    def get_with_url(self, url: str = DEFAULT_URL, i: int = 0):
-        # proxies = get_proxies()
-        try:
-            headers = self.get_headers()
-            r = requests.get(
-                url=url,
-                headers=headers,
-                # proxies=proxies,
-                timeout=10
-            )
-            return r
-        except Exception as e:
-            print('ERROR FOR LINK: ', url)
-            if i == 10:
-                raise Exception('GAVE UP ON PROXIES', e)
+        article_list = self.html_manager.get_all_elements_with_attributes(page.text, element_type, attributes)
+        
+        for url_path in self.html_manager.get_all_urls(article_list):
+            url = source.get_urls_from_string(page.url, url_path)
+            if url:
+                urls.append(url)
             else:
-                print("Skipping.  Connection error", "proxies['http']", e)
-                return self.get_with_url(url, i + 1)
+                bad_urls.append(url)
+
+        return urls
+
+
+    def get_article_urls_list(self, source: NewsSource):
+        urls = {}
+        print('__________________________________')
+        print(source.name)
+        for path in source.paths:
+            url = source.url + path
+            print(url)
+            page_data = self.requests_manager.get_html_from_url(url)
+
+            page_urls = self.get_urls_from_page(page_data, source)
+            for page_url in page_urls:
+                urls[page_url] = 1
+
+        return list(urls)
+
+
+    def get_all_articles(self):
+        urls = []
+        for source in SOURCE_LIST:
+            urls += self.get_article_urls_list(source)
+
+        return urls
 
 
 
+def test_bot():
+    bot = NewsBot()
+    # 1. # get the artiles list page
+    articles_list = bot.get_all_articles()
+    # 2. # get all the links from the page
+    i = 0
+    print('__________________________________________________')
+    for article in articles_list:
+        print(f'{i + 1} - {article}')
+        i += 1
 
+    print('__________________________________________________')
+    print('done')
 
-
-bot = NewsBot()
-# 1. # get the artiles list page
-bot.get_website_data(AntiWar)
-# 2. # get all the links from the page
-# 2. # get the data for all the links
-print('done')
+test_bot()
