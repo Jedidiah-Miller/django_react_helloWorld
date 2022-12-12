@@ -33,7 +33,7 @@ class NewsBot:
             if url:
                 urls.append(url)
             else:
-                bad_urls.append(url)
+                bad_urls.append(url_path)
 
         return urls
 
