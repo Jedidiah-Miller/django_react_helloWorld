@@ -47,7 +47,7 @@ class RequestsManager:
             else:
                 # print("Skipping.  Connection error", "proxies['http']", e)
                 print('Skipping', e)
-                return self.get_with_url(url, i + 1)
+                return self.get_response_with_url(url, i + 1)
 
 
     def get_html_from_url(self, url: str):
