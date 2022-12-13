@@ -18,9 +18,17 @@ class HtmlManager:
         return soup.find(name, attrs=attributes).find_all
 
 
+    def get_element_from_element(self, from_element: element.PageElement, name, attributes: dict) -> element.PageElement:
+        return from_element.find(name, attrs=attributes)
+
+
     def get_all_elements_with_attributes(self, text, name, attributes: dict) -> element.ResultSet:
         soup = self.get_soup(text)
         return soup.find_all(name, attrs=attributes)
+
+
+    def get_urls_from_element(self, from_element: element.PageElement):
+        return [a.get('href') for a in from_element.find_all('a')]
 
 
     def get_all_urls(self, elements: element.ResultSet) -> list:

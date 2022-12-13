@@ -84,9 +84,30 @@ class NewsSource(object):
     - fails requirements : https://www.reuters.com/world/china/
     - passes requirements: https://www.reuters.com/world/china/chinas-wuhan-shadow-reserve-resentment-even-covid-lockdowns-ease-2022-12-09/
     '''
+    # # TODO: the HtmlElements should be their own model
     list_element: HtmlElement
     '''
     specific html list element the news articles are found in
+    ex: <li class="story-collection..."></li> (shortened)
+    '''
+    headline_element: HtmlElement
+    '''
+    specific html headline element for the news article - found inside of the list_element
+    ex: <li class="story-collection..."></li> (shortened)
+    '''
+    summary_element: HtmlElement
+    '''
+    specific html summary element for the news article - found inside of the list_element
+    ex: <li class="story-collection..."></li> (shortened)
+    '''
+    time_element: HtmlElement
+    '''
+    specific html timestamp element for the news article - found inside of the list_element
+    ex: <li class="story-collection..."></li> (shortened)
+    '''
+    image_element: HtmlElement
+    '''
+    specific html image element for the news article - found inside of the list_element
     ex: <li class="story-collection..."></li> (shortened)
     '''
     load_more_element: HtmlElement
@@ -143,7 +164,7 @@ class NewsArticle:
     '''
     NewsSource id
     '''
-    title: str
+    headline: str
     '''
     headliine / title of the news article
     '''
@@ -155,9 +176,19 @@ class NewsArticle:
     '''
     summary of news the article
     '''
+    time: str
+    '''
+    time the news article was published or last upated
+    '''
+    image_url: str # optional
+    '''
+    url for the image to be displayed
+    '''
 
-    def __init__(self, source = None, title = None, url = None, summary = None):
+    def __init__(self, source=None, headline=None, url=None, summary=None, time=None, image_url=None):
         self.source = source
         self.url = url
-        self.title = title
+        self.headline = headline
         self.summary = summary
+        self.time = time
+        self.image_url = image_url

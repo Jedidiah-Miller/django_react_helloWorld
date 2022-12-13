@@ -1,7 +1,8 @@
+from newspaper import Article
+from bs4.element import PageElement
 from .models import NewsSource, NewsArticle
 from .requests_manager import RequestsManager
 from .html_manager import HtmlManager
-from newspaper import Article
 from .source_data import SOURCE_LIST
 
 
@@ -15,11 +16,10 @@ class NewsBot:
         self.html_manager = HtmlManager()
         print(self.__str__, ': INITIALIZED')
 
+# gets called 3rd
+    def get_articles_from_page(self, page, source: NewsSource):
 
-    def get_urls_from_page(self, page, source: NewsSource):
-
-        urls = []
-        bad_urls = []
+        news_articles = {}
 
         element_type = source.list_element.element_type
         attributes = {
@@ -27,26 +27,56 @@ class NewsBot:
         }
 
         article_list = self.html_manager.get_all_elements_with_attributes(page.text, element_type, attributes)
-        
-        for url_path in self.html_manager.get_all_urls(article_list):
-            url = source.get_urls_from_string(page.url, url_path)
+
+        article_item: PageElement
+        for article_item in article_list:
+
+            url = self.get_valid_url_from_element(page, article_item, source)
             if url:
-                urls.append(url)
+                news_article = self.create_news_article(article_item, source, url)
+                news_articles[url] = news_article.__dict__
             else:
-                bad_urls.append(url_path)
+                print('bad element')
 
-        return urls
+        return news_articles
 
 
-    def create_news_article(self, page, source: NewsSource, url: str) -> NewsArticle:
+    def get_valid_url_from_element(self, page, e: PageElement, s: NewsSource):
+        '''
+
+        '''
+        urls = {}
+
+        url_paths = self.html_manager.get_urls_from_element(e)
+        for url_path in url_paths:
+            url = s.get_urls_from_string(page.url, url_path)
+            if url:
+                urls[url] = 1
+
+        if len(urls.keys()) > 1:
+            print('why?')
+
+        return None if len(urls) == 0 else next(iter(urls))
+
+
+
+    def create_news_article(self, e: PageElement, s: NewsSource, url: str) -> NewsArticle:
+
+        headline = self.html_manager.get_element_from_element(e, s.headline_element.element_type, {'class': s.headline_element.get_element_regex()})
+        summary = self.html_manager.get_element_from_element(e, s.summary_element.element_type, {'class': s.summary_element.get_element_regex()})
+        time = self.html_manager.get_element_from_element(e, s.time_element.element_type, {'class': s.time_element.get_element_regex()})
+        image_url = self.html_manager.get_element_from_element(e, s.image_element.element_type, {'class': s.image_element.get_element_regex()})
+
         return NewsArticle(
-            source = source.name,
-            title = 'TODO: add title, or add default / empty title',
+            source = s.name,
             url = url,
-            summary = 'TODO: add summary, or add default / empty summary'
+            headline = headline.text if headline else None,
+            summary = summary.text if summary else None,
+            time = time.text if time else None,
+            image_url = image_url.text if image_url else None
         )
 
-
+# gets called 2nd
     def get_article_urls_list(self, source: NewsSource):
         urls = {}
         print('__________________________________')
@@ -56,14 +86,12 @@ class NewsBot:
             print(url)
             page_data = self.requests_manager.get_html_from_url(url)
 
-            page_urls = self.get_urls_from_page(page_data, source)
-            for url in page_urls:
-                news_article = self.create_news_article(page_data, source, url)
-                urls[url] = news_article.__dict__
+            news_articles = self.get_articles_from_page(page_data, source)
+            urls.update(news_articles)
 
         return list(urls.values())
 
-
+# gets called 1st
     def get_all_articles(self, as_list = True):
         '''
         return as a list of News Articles unless specified otherwise

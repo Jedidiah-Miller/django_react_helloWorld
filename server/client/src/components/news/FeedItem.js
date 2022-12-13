@@ -30,18 +30,18 @@ export class FeedItem extends Component {
 
   render() {
 
-    const { title, summary, source, published } = this.props.article;
+    const { headline, summary, source, image_url, time } = this.props.article;
     const links = this.getLinks();
 
     return (
       <div className="card mb-3" style={{'maxWidth': '540px'}}>
         <div className="row g-0">
           <div className="col-md-4">
-            <img src="..." className="img-fluid rounded-start" alt="..." />
+            <img src={image_url} className="img-fluid rounded-start" alt="..." />
           </div>
           <div className="col-md-8">
             <div className="card-body">
-              <h5 className="card-title">{title}</h5>
+              <h5 className="card-title">{headline}</h5>
               <p className="card-text">
                 <small className="text-muted">
                   <a href={source.href} target="_blank">
@@ -49,7 +49,7 @@ export class FeedItem extends Component {
                   </a>
                 </small>
               </p>
-              <p className="card-text"><small className="text-muted">{published}</small></p>
+              <p className="card-text"><small className="text-muted">{time}</small></p>
               <p className="card-text">
                 <div dangerouslySetInnerHTML={{__html: summary}} />
               </p>
