@@ -1,29 +1,50 @@
 from newspaper import Article
 from bs4.element import PageElement
-from .models import NewsSource, NewsArticle
+from .models import NewsSource, NewsSourceListItemElements, HtmlElement, NewsArticle
+from .firestore import NewsSourceFirestore
 from .requests_manager import RequestsManager
 from .html_manager import HtmlManager
-from .source_data import SOURCE_LIST
 
 
 class NewsBot:
 
     requests_manager: RequestsManager
+    news_source_firestore: NewsSourceFirestore
     html_manager: HtmlManager
+
+    source_list: list
 
     def __init__(self):
         self.requests_manager = RequestsManager()
+        self.news_source_firestore = NewsSourceFirestore()
         self.html_manager = HtmlManager()
+        self.source_list = []
         print(self.__str__, ': INITIALIZED')
+
+
+    def get_all_news_sources(self):
+        self.source_list.clear()
+
+        for data in self.news_source_firestore.get_all_news_sources():
+            list_item_elements = data.get('list_item_elements')
+
+            for element_name in data.get('list_item_elements').keys():
+                list_item_elements[element_name] = HtmlElement(list_item_elements[element_name])
+
+            data['list_item_elements'] = NewsSourceListItemElements(list_item_elements)
+            news_source = NewsSource(data)
+
+            self.source_list.append(news_source)
+
 
 # gets called 3rd
     def get_articles_from_page(self, page, source: NewsSource):
 
         news_articles = {}
 
-        element_type = source.list_element.element_type
+        element_type = source.list_item_elements.list_element.element_type
         attributes = {
-            'class': source.list_element.get_element_regex()
+            'class': source.list_item_elements.list_element.get_element_regex()
         }
 
         article_list = self.html_manager.get_all_elements_with_attributes(page.text, element_type, attributes)
@@ -54,7 +75,7 @@ class NewsBot:
                 urls[url] = 1
 
         if len(urls.keys()) > 1:
-            print('why?')
+            print('got multiple urls from article list item: ', urls.keys())
 
         return None if len(urls) == 0 else next(iter(urls))
 
@@ -62,18 +83,20 @@ class NewsBot:
 
     def create_news_article(self, e: PageElement, s: NewsSource, url: str) -> NewsArticle:
 
-        headline = self.html_manager.get_element_from_element(e, s.headline_element.element_type, {'class': s.headline_element.get_element_regex()})
-        summary = self.html_manager.get_element_from_element(e, s.summary_element.element_type, {'class': s.summary_element.get_element_regex()})
-        time = self.html_manager.get_element_from_element(e, s.time_element.element_type, {'class': s.time_element.get_element_regex()})
-        image_url = self.html_manager.get_element_from_element(e, s.image_element.element_type, {'class': s.image_element.get_element_regex()})
+        li_el = s.list_item_elements
+
+        headline = self.html_manager.get_element_from_element(e, li_el.headline_element.element_type, {'class': li_el.headline_element.get_element_regex()})
+        # summary = self.html_manager.get_element_from_element(e, li_el.summary_element.element_type, {'class': li_el.summary_element.get_element_regex()})
+        time = self.html_manager.get_element_from_element(e, li_el.time_element.element_type, {'class': li_el.time_element.get_element_regex()})
+        # image_url = self.html_manager.get_element_from_element(e, li_el.image_element.element_type, {'class': li_el.image_element.get_element_regex()})
 
         return NewsArticle(
             source = s.name,
             url = url,
             headline = headline.text if headline else None,
-            summary = summary.text if summary else None,
+            # summary = summary.text if summary else None,
             time = time.text if time else None,
-            image_url = image_url.text if image_url else None
+            # image_url = image_url.text if image_url else None
         )
 
 # gets called 2nd
@@ -96,14 +119,17 @@ class NewsBot:
         '''
         return as a list of News Articles unless specified otherwise
         '''
+        if not self.source_list:
+            self.get_all_news_sources()
+
         if as_list:
             urls = []
-            for source in SOURCE_LIST:
+            for source in self.source_list:
                 urls += self.get_article_urls_list(source)
             return urls
         else:
             urls = {}
-            for source in SOURCE_LIST:
+            for source in self.source_list:
                 urls[source.name] = self.get_article_urls_list(source)
             return urls
 
