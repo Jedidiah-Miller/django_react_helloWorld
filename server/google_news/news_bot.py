@@ -4,6 +4,7 @@ from .models import NewsSource, NewsSourceListItemElements, HtmlElement, NewsArt
 from .firestore import NewsSourceFirestore
 from .requests_manager import RequestsManager
 from .html_manager import HtmlManager
+from .helper_functions import DateTimeFormatter
 
 
 class NewsBot:
@@ -85,18 +86,33 @@ class NewsBot:
 
         li_el = s.list_item_elements
 
-        headline = self.html_manager.get_element_from_element(e, li_el.headline_element.element_type, {'class': li_el.headline_element.get_element_regex()})
-        # summary = self.html_manager.get_element_from_element(e, li_el.summary_element.element_type, {'class': li_el.summary_element.get_element_regex()})
-        time = self.html_manager.get_element_from_element(e, li_el.time_element.element_type, {'class': li_el.time_element.get_element_regex()})
-        # image_url = self.html_manager.get_element_from_element(e, li_el.image_element.element_type, {'class': li_el.image_element.get_element_regex()})
+        # TEMP
+        headline = None
+        summary = None
+        time = None
+        image_url = None
+
+        if li_el.__dict__.get('headline_element'):
+            attributes = {'class': li_el.headline_element.get_element_regex()}
+            headline = self.html_manager.get_element_from_element(e, li_el.headline_element.element_type, attributes)
+        if li_el.__dict__.get('summary_element'):
+            attributes = {'class': li_el.summary_element.get_element_regex()}
+            summary = self.html_manager.get_element_from_element(e, li_el.summary_element.element_type, attributes)
+        if li_el.__dict__.get('time_element'):
+            attributes = {'class': li_el.time_element.get_element_regex()}
+            time = self.html_manager.get_element_from_element(e, li_el.time_element.element_type, attributes)
+            time = DateTimeFormatter().get_time_info(time)
+        if li_el.__dict__.get('image_element'):
+            attributes = {'class': li_el.image_element.get_element_regex()}
+            image_url = self.html_manager.get_element_from_element(e, li_el.image_element.element_type, attributes)
 
         return NewsArticle(
             source = s.name,
             url = url,
             headline = headline.text if headline else None,
-            # summary = summary.text if summary else None,
-            time = time.text if time else None,
-            # image_url = image_url.text if image_url else None
+            summary = summary.text if summary else None,
+            time = time if time else '0',
+            image_url = image_url.attrs.get('src') if image_url else None
         )
 
 # gets called 2nd
@@ -114,6 +130,9 @@ class NewsBot:
 
         return list(urls.values())
 
+    def sort_by_date(self, urls = [{'time': '22 UTC'}]):
+        return sorted(urls, key=lambda d: d.get('time'), reverse=True)
+
 # gets called 1st
     def get_all_articles(self, as_list = True):
         '''
@@ -126,11 +145,13 @@ class NewsBot:
             urls = []
             for source in self.source_list:
                 urls += self.get_article_urls_list(source)
+            urls = self.sort_by_date(urls)
             return urls
         else:
             urls = {}
             for source in self.source_list:
                 urls[source.name] = self.get_article_urls_list(source)
+            urls = self.sort_by_date(urls)
             return urls
 
 
