@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .serializers import GNArticleSerializer
 from .pygooglenews import GoogleNewsManager
 from .news_bot import NewsBot
+from .firestore import NewsSourceFirestore
+
 
 # GNArticle Viewset
 class GNArticleAPI(generics.GenericAPIView):
@@ -11,7 +13,21 @@ class GNArticleAPI(generics.GenericAPIView):
 
     def __init__(self):
         self.gn = GoogleNewsManager()
-        self.news_bot = NewsBot()
+        self.news_source_firestore = NewsSourceFirestore()
+        self.news_bot = NewsBot(news_source_firestore=self.news_source_firestore)
+
+
+    def post(self, request, *args, **kwargs):
+
+        try:
+            data = request.data
+            doc_id = self.news_source_firestore.create_news_source(data)
+            return Response({'newsSourceId': doc_id})
+        except Exception as e:
+            print('____________________________________')
+            print(self.__class__.__name__ + ' EXCEPTION: ')
+            print(e)
+            print('____________________________________')
 
 
     def get_google_news(self, request, *args, **kwargs):

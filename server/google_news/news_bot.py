@@ -15,9 +15,9 @@ class NewsBot:
 
     source_list: list
 
-    def __init__(self):
+    def __init__(self, news_source_firestore: NewsSourceFirestore):
         self.requests_manager = RequestsManager()
-        self.news_source_firestore = NewsSourceFirestore()
+        self.news_source_firestore = news_source_firestore if news_source_firestore else NewsSourceFirestore()
         self.html_manager = HtmlManager()
         self.source_list = []
         print(self.__str__, ': INITIALIZED')
