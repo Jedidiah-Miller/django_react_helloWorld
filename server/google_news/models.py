@@ -129,7 +129,7 @@ class NewsSource(object):
     - www.reuters.com/world/americas/
     - www.reuters.com/world/asia-pacific/
     '''
-    url_requirments: str
+    url_requirements: str
     '''
     Regex - requirements for a properly formatted URL
     - ex: Reuters urls all end in a date formatted -2022-12-09
@@ -165,13 +165,13 @@ class NewsSource(object):
 
 
     def is_valid_url(self, url):
-        if not self.url_requirments:
+        if not self.url_requirements:
             return True
         # remove trailing slash if needed
         if url[-1] == '/':
             url = url[:-1]
 
-        return re.search(self.url_requirments, url)
+        return re.search(self.url_requirements, url)
 
 
 

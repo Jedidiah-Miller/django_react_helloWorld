@@ -26,7 +26,7 @@ BLANK = NewsSource(
         '/world/india/',
         '/world/middle-east/',
     ],
-    url_requirments = None,
+    url_requirements = None,
     list_element = HtmlElement(
         element_type = HtmlElementTypes.li,
         class_name = 'story-collection'
@@ -49,7 +49,7 @@ AP = NewsSource(
         '/hub/latin-america/',
         '/hub/middle-east/',
     ],
-    url_requirments = None,
+    url_requirements = None,
     list_item_elements = NewsSourceListItemElements(
         list_element = HtmlElement(
             element_type = HtmlElementTypes.div,
@@ -77,7 +77,7 @@ Tasnim = NewsSource(
     paths = [
         '/latest-news?service=-1&date=yyyy%2Fmm%2Fdd/', # date: yyyy mm dd date=2022%2F12%2F13
     ],
-    url_requirments = REGEX.STRING_ENDS_WITH_DATE,
+    url_requirements = REGEX.STRING_ENDS_WITH_DATE,
     list_item_elements = NewsSourceListItemElements(
         list_element = HtmlElement(
             element_type = HtmlElementTypes.li,
@@ -112,7 +112,7 @@ IRNA = NewsSource(
     paths = [
         '/archive/',
     ],
-    url_requirments = REGEX.STRING_ENDS_WITH_DATE,
+    url_requirements = REGEX.STRING_ENDS_WITH_DATE,
     list_item_elements = NewsSourceListItemElements(
         list_element = HtmlElement(
             element_type = HtmlElementTypes.li,
@@ -154,7 +154,7 @@ Reuters = NewsSource(
         '/world/india/',
         '/world/middle-east/',
     ],
-    url_requirments = REGEX.STRING_ENDS_WITH_DATE,
+    url_requirements = REGEX.STRING_ENDS_WITH_DATE,
     list_item_elements = NewsSourceListItemElements(
         list_element = HtmlElement(
             element_type = HtmlElementTypes.li,
@@ -204,7 +204,7 @@ RIA = NewsSource(
         '/incidents/',
         '/defense_safety/',
     ],
-    url_requirments = REGEX.STRING_ENDS_WITH_HTML,
+    url_requirements = REGEX.STRING_ENDS_WITH_HTML,
     list_item_elements = NewsSourceListItemElements(    
         list_element = HtmlElement(
             element_type = HtmlElementTypes.div,
@@ -233,7 +233,7 @@ TheTimesOfIsrael = NewsSource(
     paths = [
         '/latest/',
     ],
-    url_requirments = None, # REGEX.STRING_ENDS_WITH_TRAILING_SLASH,
+    url_requirements = None, # REGEX.STRING_ENDS_WITH_TRAILING_SLASH,
     list_item_elements = NewsSourceListItemElements(    
         list_element = HtmlElement(
             element_type = HtmlElementTypes.div,

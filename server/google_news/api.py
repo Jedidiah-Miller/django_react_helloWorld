@@ -16,6 +16,10 @@ class GNArticleAPI(generics.GenericAPIView):
         self.news_source_firestore = NewsSourceFirestore()
         self.news_bot = NewsBot(news_source_firestore=self.news_source_firestore)
 
+        # TODO: TEMPORARY!
+        # self.news_source_firestore.update_all_url_requirements()
+        # print('done')
+
 
     def post(self, request, *args, **kwargs):
 

@@ -101,4 +101,12 @@ class NewsSourceFirestore(FirestoreCollectionManager):
 
 
 
+    def update_news_source(self, doc_id: str, data: dict):
+
+        data['updatedAt'] = datetime.now()
+        # # merge = True will not remove any fields
+        doc_update_result = self.collection.document(doc_id).set(data, merge=True)
+
+        return doc_update_result
+
 
