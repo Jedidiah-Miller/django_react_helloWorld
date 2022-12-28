@@ -3,12 +3,13 @@ import React from 'react';
 
 export default function TextInput(props) {
   const {name, label, required, onChange, value, errors} = props;
+  const inputId = name + '-input';
   return (
     <div className="input-group has-validation">
-      <span className="input-group-text"></span>
+      <span className="input-group-text">*</span>
       <div className={"form-floating" + (errors ? " is-invalid" : "")}>
         <input
-          id="floatingInputGroup2"
+          id={inputId}
           className={"form-control" + (errors ? " is-invalid" : "")}
           type="text"
           required={required}
@@ -17,7 +18,7 @@ export default function TextInput(props) {
           onChange={onChange}
           value={value}
         />
-        <label htmlFor="floatingInputGroup2">{label}</label>
+        <label htmlFor={inputId}>{label}</label>
       </div>
       <div className="invalid-feedback">
         {errors}

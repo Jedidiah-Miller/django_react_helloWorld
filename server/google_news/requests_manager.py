@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 
 class RequestsManager:
 
-    ECT = 'text/html;'
+    ECT = 'text/html'
     '''
     Expected Content Type
     * should be one of the followinig:

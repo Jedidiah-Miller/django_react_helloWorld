@@ -9,6 +9,7 @@ import Register from './accounts/Register';
 import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './events/Dashboard';
 import Feed from './news/Feed';
+import NewsSourceForm from './news/NewsSource/SourceForm/Form';
 
 import { Provider as AlertProvider, positions, transitions } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -43,6 +44,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Dashboard} />
                 <Route exact path="/feed" component={Feed} />
+                <Route exact path="/source/add" component={NewsSourceForm} />
                 {/* vvv credentials vvv */}
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />

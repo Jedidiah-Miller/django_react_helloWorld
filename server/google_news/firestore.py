@@ -28,9 +28,26 @@ class NewsSourceFirestore(FirestoreCollectionManager):
         return data
 
 
+    def remove_empty_fields(self, data: dict):
+
+        for k in data.keys():
+            t = type(data[k])
+            if data[k] == '':
+                data[k] = None
+            elif t is str and data[k].isspace():
+                data[k] = None
+            elif t is dict:
+                data[k] = self.remove_empty_fields(data[k])
+
+        return data
+
+
     def create_news_source(self, data):
 
-        # # TODO make sure there is no dulicate urls - or sources sharing the same url
+        # # TODO make sure there is no duplicate urls - or sources sharing the same url
+        # # TODO validate
+
+        data = self.remove_empty_fields(data)
 
         sub_collections = {
             'list_item_elements': None,

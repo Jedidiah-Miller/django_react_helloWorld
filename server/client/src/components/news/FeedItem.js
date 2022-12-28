@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ReactTinyLink } from "react-tiny-link";
 import { LoaderSpinner } from '../common/UI/LoaderSpinner';
 
 
@@ -13,6 +14,7 @@ export class FeedItem extends Component {
   cardLinks = (links = []) => {
     return (
       <div className="card-body">
+      <h2>CARD LINKS</h2>
         {links.map((l, i) =>
           <a
             key={i}
@@ -30,30 +32,39 @@ export class FeedItem extends Component {
 
   render() {
 
-    const { headline, summary, source, image_url, time } = this.props.article;
+    const { headline, summary, source, url, image_url, time } = this.props.article;
     const links = this.getLinks();
 
     return (
-      <div className="card mb-3" style={{'maxWidth': '540px'}}>
+      <div className="card mb-3">
         <div className="row g-0">
-          <div className="col-md-4">
-            <img src={image_url} className="img-fluid rounded-start" alt="..." />
+          <div id="image-container" className="col-md-4">
+            <a href={url} target="_blank">
+              <img src={image_url} className="img-fluid rounded-start" alt="" />
+            </a>
           </div>
           <div className="col-md-8">
             <div className="card-body">
-              <h5 className="card-title">{headline}</h5>
               <p className="card-text">
                 <small className="text-muted">
-                  <a href={source.href} target="_blank">
-                    {source.title}
-                  </a>
+                  {source}
                 </small>
               </p>
-              <p className="card-text"><small className="text-muted">{time}</small></p>
+              <a id="headline-container" href={url} target="_blank">
+                <h5 className="card-title">{headline}</h5>
+              </a>
               <p className="card-text">
                 <div dangerouslySetInnerHTML={{__html: summary}} />
               </p>
+              <p className="card-text"><small className="text-muted">{time}</small></p>
               {links && this.cardLinks(links)}
+              <p className="card-text">
+                <small className="text-muted">
+                  <a href={url} target="_blank">
+                    {url}
+                  </a>
+                </small>
+              </p>
             </div>
           </div>
         </div>

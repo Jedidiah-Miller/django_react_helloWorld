@@ -28,6 +28,7 @@ class GNArticleAPI(generics.GenericAPIView):
             print(self.__class__.__name__ + ' EXCEPTION: ')
             print(e)
             print('____________________________________')
+            return Response({'error': f'error adding {data}: {e}'}, status=400)
 
 
     def get_google_news(self, request, *args, **kwargs):

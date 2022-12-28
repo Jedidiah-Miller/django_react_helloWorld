@@ -38,15 +38,22 @@ class NewsBot:
             self.source_list.append(news_source)
 
 
+    def get_element_attributes(self, element: HtmlElement) -> dict:
+        if not element.class_name:
+            return None
+
+        return {
+            'class': element.get_element_regex()
+        }
+
+
 # gets called 3rd
     def get_articles_from_page(self, page, source: NewsSource):
 
         news_articles = {}
 
         element_type = source.list_item_elements.list_element.element_type
-        attributes = {
-            'class': source.list_item_elements.list_element.get_element_regex()
-        }
+        attributes = self.get_element_attributes(source.list_item_elements.list_element)
 
         article_list = self.html_manager.get_all_elements_with_attributes(page.text, element_type, attributes)
 
@@ -93,17 +100,17 @@ class NewsBot:
         image_url = None
 
         if li_el.__dict__.get('headline_element'):
-            attributes = {'class': li_el.headline_element.get_element_regex()}
+            attributes = self.get_element_attributes(li_el.headline_element)
             headline = self.html_manager.get_element_from_element(e, li_el.headline_element.element_type, attributes)
         if li_el.__dict__.get('summary_element'):
-            attributes = {'class': li_el.summary_element.get_element_regex()}
+            attributes = self.get_element_attributes(li_el.summary_element)
             summary = self.html_manager.get_element_from_element(e, li_el.summary_element.element_type, attributes)
         if li_el.__dict__.get('time_element'):
-            attributes = {'class': li_el.time_element.get_element_regex()}
+            attributes = self.get_element_attributes(li_el.time_element)
             time = self.html_manager.get_element_from_element(e, li_el.time_element.element_type, attributes)
             time = DateTimeFormatter().get_time_info(time)
         if li_el.__dict__.get('image_element'):
-            attributes = {'class': li_el.image_element.get_element_regex()}
+            attributes = self.get_element_attributes(li_el.image_element)
             image_url = self.html_manager.get_element_from_element(e, li_el.image_element.element_type, attributes)
 
         return NewsArticle(
