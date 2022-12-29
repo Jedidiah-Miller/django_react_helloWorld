@@ -20,6 +20,6 @@ urlpatterns = [
     path('', include('client.urls')),
     path('', include('countries.urls')),
     path('', include('events.urls')),
-    path('', include('google_news.urls')),
+    path('', include('news_sources.urls')),
     path('', include('accounts.urls'))
 ]

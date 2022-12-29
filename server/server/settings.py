@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
     'countries',
     'events',
-    'google_news',
+    'news_sources',
     'accounts',
     'client',
 ]

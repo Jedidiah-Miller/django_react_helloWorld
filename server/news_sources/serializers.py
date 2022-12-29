@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from google_news.models import GNArticle
+from news_sources.models import GNArticle
 
 class GNArticleSerializer(serializers.ModelSerializer):
 
