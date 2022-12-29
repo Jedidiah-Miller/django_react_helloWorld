@@ -8,5 +8,5 @@ from .api import GNArticleAPI
 base_url = 'api/'
 
 urlpatterns = [
-  path(base_url + 'google_news/', GNArticleAPI.as_view())
+  path(base_url + 'news_sources/', GNArticleAPI.as_view())
 ]

@@ -5,7 +5,7 @@ import { tokenConfig } from './auth';
 import { multiParams } from './http/config';
 
 
-const baseUrl = 'api/google_news/'
+const baseUrl = 'api/news_sources/'
 
 // /**
 //  * CREATE EVENT
